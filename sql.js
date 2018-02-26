@@ -54,7 +54,10 @@
  *              eg: select top 3 * from Student order by Age // 查询年龄最小的3个学生
  *              eg: select top 50 percent * from Student  //选取50% 的记录
  *
- *
+ * 11，limit    常用于分页
+ *              eg: select * from Student limit 10 // 查询前10行数据 显示1-10条数据
+ *              eg: select * from Student limit 1,10 //从第二行开始查询10条数据，从第二行到第十一行
+ *              eg: select * from Student limit 5,10 //从地六行开始查询10条数据，从第六行到第十五行
  * sql插入语句
  * 1，insert    用于向表格中插入新的行
  *              eg: insert into Student (Age,Id) values (26,'1')
@@ -145,7 +148,16 @@
  *    3，修改列数据类型
  *            eg: alter table Student alter column id varchar // 修改Student表中 id 列的数据类型为长度可变的字符串
  *
- * 9，is null / is not null
+ * 9，rename             重命名表
+ *            eg: rename table Student to Person // 将Student表重命名为Person
+ *
+ * 10，desc              查询表结构
+ *            eg: desc Student
+ *
+ * 11，is null / is not null
  *            eg: select firstName,lastName from Student where id is null // 查询 id 为空的姓名信息
  *            eg: select firstName,lastName from Student where id is not null // 查询 id 不为空的姓名信息
+ *
+ * 12,order by rand()   随机查询
+ *            eg: select * from Student order by rand() limit 10 // 随机取10条记录
  */
