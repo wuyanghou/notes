@@ -186,16 +186,27 @@
  *
  *               //node.js
  *               let mysql =require('mysql');
-                 let connection = mysql.createConnection({
+                 let pool = mysql.createPool({
                     host     : 'localhost',
                     user     : 'luoming',
                     password : 'TYlm920606',
                     database : 'test',
                  })
-                 connection.connect();
-                 connection.query('select * from Student where name="luoming"',(error,results,fields)=>{
-                 if(error) throw error;
-                 console.log(results);
-                 })
+                 // 直接使用 pool.query          简单，且可以自动回收connection
+                 pool.query('select * from person where name like "l%"', (err, results, fields) => {
+                    if (err) throw err;
+                    console.log('results', results);
+                 });
+
+                 // 通过 pool.getConnection 获得链接 获取到的connection在其回调函数中是一致的，可以保证系列查询在同一个connection上依次串行执行；pool.query每次调用则可能在不同的connection上执行查询
+                 pool.getConnection((err, connection) => {
+                    if (err) throw err;
+                    connection.query('select * from person where name like "l%"', (err, results, fields) => {
+                        if (err) throw err;
+                        console.log('results', results);
+                        connection.release();   // 释放该链接，把该链接放回池里供其他人使用
+                        // connection.destroy();   // 如果要关闭连接并将其从池中删除，请改用connection.destroy（）。该池将在下次需要时创建一个新的连接。
+                    });
+                });
  *
  */
