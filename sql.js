@@ -17,6 +17,7 @@
  *              eg: select * from Student where Age >18 and Name like '罗%' //查询年龄大于18 且姓 罗 的数据
  *              eg: select * from Student where Name like '罗_' or Name like '陈%' //查询姓 罗 或 姓 陈 的数据
  *              eg: select * from Student where Age in (18,19,20) //查询年龄是 18,19,20 的数据
+ *              eg: select * from Student where Age between 20 and 30 //查询年龄为20 到30 之间的数据
  *              eg: select * from Student where Name not like '罗%' // 查询姓氏不为 罗 的数据
  *
  * 3，排序      order by (ASC 升序-默认，DESC 降序)
@@ -160,4 +161,41 @@
  *
  * 12,order by rand()   随机查询
  *            eg: select * from Student order by rand() limit 10 // 随机取10条记录
+ *
+ * 13，index            创建索引，加快索引速度，但会降低增删改的速度，一般建在数据量大、值比较唯一、经常查询的字段上
+ *            eg: create index index_name on Student (name)  // 给Student表中的name列建立普通索引
+ *            eg: create unique index index_name on Student (name) //给Student表中的name列建立唯一索引
+ *            eg: alter table Student add index index_name (name)  // 给Student表中的name列建立普通索引
+ *            eg: alter table Student add unique (name) //给Student表中的name列建立唯一索引
+ *            eg: alter table Student add primary key (name) //给Student表中的name列建立主键索引
+ *
+ *
+ *     nodejs 连接 mysql
+ *             5.7之前的版本
+ *                      window系统下安装msi格式的mysql成功后 ，初始管理账号是root，没有密码，所以第一次登录时只需要键入
+ *                      mysql/mysql -u root 即可
+ *            设置密码  mysql -u 用户名 -p 旧密码 password 新密码
+ *                      eg: mysql -u root password 123456  // 给root设置密码123456 ，刚开始root没有密码，所以 -p 旧密码 一项就可以省略了
+ *            设置密码之后的登录格式 ：
+ *                      mysql -u root -p
+ *                      Enter password:
+ *            5.7及之后的版本(我现在安装的是5.7.21)
+ *               教程地址 https://jingyan.baidu.com/article/d7130635f1c77d13fdf475df.html
+ *
+ *
+ *
+ *               //node.js
+ *               let mysql =require('mysql');
+                 let connection = mysql.createConnection({
+                    host     : 'localhost',
+                    user     : 'luoming',
+                    password : 'TYlm920606',
+                    database : 'test',
+                 })
+                 connection.connect();
+                 connection.query('select * from Student where name="luoming"',(error,results,fields)=>{
+                 if(error) throw error;
+                 console.log(results);
+                 })
+ *
  */
