@@ -131,7 +131,7 @@
  *
  *    5，default         约束用于向列中插入默认值
  *            eg: create table Student (firstName varchar(255) default 'luoming',id int not null) // 如果不添加id就无法插入或更新新记录，firstName默认值为'luoming'
- *            //当表已经被创建了，需要给id添加unique约束   alter table Student alter firstName set default 'luoming'
+ *            //当表已经被创建了，需要给id添加default约束   alter table Student alter firstName set default 'luoming'
  *
  * 6，drop                删除表和数据库
  *            eg: drop database my_db // 删除 my_db 数据库
@@ -153,11 +153,12 @@
  *
  * 10，desc              查询表结构
  *            eg: desc Student
- *
+ *			  eg: show columns from Student;
  * 11，is null / is not null
  *            eg: select firstName,lastName from Student where id is null // 查询 id 为空的姓名信息
  *            eg: select firstName,lastName from Student where id is not null // 查询 id 不为空的姓名信息
  *
  * 12,order by rand()   随机查询
  *            eg: select * from Student order by rand() limit 10 // 随机取10条记录
+ * show index from Student;  查看索引
  */
