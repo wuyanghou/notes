@@ -17,6 +17,7 @@
  *              eg: select * from Student where Age >18 and Name like '罗%' //查询年龄大于18 且姓 罗 的数据
  *              eg: select * from Student where Name like '罗_' or Name like '陈%' //查询姓 罗 或 姓 陈 的数据
  *              eg: select * from Student where Age in (18,19,20) //查询年龄是 18,19,20 的数据
+ *              eg: select * from Student where Age between 20 and 30 //查询年龄为20 到30 之间的数据
  *              eg: select * from Student where Name not like '罗%' // 查询姓氏不为 罗 的数据
  *
  * 3，排序      order by (ASC 升序-默认，DESC 降序)
@@ -153,12 +154,59 @@
  *
  * 10，desc              查询表结构
  *            eg: desc Student
- *			  eg: show columns from Student;
+ *
  * 11，is null / is not null
  *            eg: select firstName,lastName from Student where id is null // 查询 id 为空的姓名信息
  *            eg: select firstName,lastName from Student where id is not null // 查询 id 不为空的姓名信息
  *
  * 12,order by rand()   随机查询
  *            eg: select * from Student order by rand() limit 10 // 随机取10条记录
- * show index from Student;  查看索引
+ *
+ * 13，index            创建索引，加快索引速度，但会降低增删改的速度，一般建在数据量大、值比较唯一、经常查询的字段上
+ *            eg: create index index_name on Student (name)  // 给Student表中的name列建立普通索引
+ *            eg: create unique index index_name on Student (name) //给Student表中的name列建立唯一索引
+ *            eg: alter table Student add index index_name (name)  // 给Student表中的name列建立普通索引
+ *            eg: alter table Student add unique (name) //给Student表中的name列建立唯一索引
+ *            eg: alter table Student add primary key (name) //给Student表中的name列建立主键索引
+ *
+ *
+ *     nodejs 连接 mysql
+ *             5.7之前的版本
+ *                      window系统下安装msi格式的mysql成功后 ，初始管理账号是root，没有密码，所以第一次登录时只需要键入
+ *                      mysql/mysql -u root 即可
+ *            设置密码  mysql -u 用户名 -p 旧密码 password 新密码
+ *                      eg: mysql -u root password 123456  // 给root设置密码123456 ，刚开始root没有密码，所以 -p 旧密码 一项就可以省略了
+ *            设置密码之后的登录格式 ：
+ *                      mysql -u root -p
+ *                      Enter password:
+ *            5.7及之后的版本(我现在安装的是5.7.21)
+ *               教程地址 https://jingyan.baidu.com/article/d7130635f1c77d13fdf475df.html
+ *
+ *
+ *
+ *               //node.js
+ *               let mysql =require('mysql');
+                 let pool = mysql.createPool({
+                    host     : 'localhost',
+                    user     : 'luoming',
+                    password : 'TYlm920606',
+                    database : 'test',
+                 })
+                 // 直接使用 pool.query          简单，且可以自动回收connection
+                 pool.query('select * from person where name like "l%"', (err, results, fields) => {
+                    if (err) throw err;
+                    console.log('results', results);
+                 });
+
+                 // 通过 pool.getConnection 获得链接 获取到的connection在其回调函数中是一致的，可以保证系列查询在同一个connection上依次串行执行；pool.query每次调用则可能在不同的connection上执行查询
+                 pool.getConnection((err, connection) => {
+                    if (err) throw err;
+                    connection.query('select * from person where name like "l%"', (err, results, fields) => {
+                        if (err) throw err;
+                        console.log('results', results);
+                        connection.release();   // 释放该链接，把该链接放回池里供其他人使用
+                        // connection.destroy();   // 如果要关闭连接并将其从池中删除，请改用connection.destroy（）。该池将在下次需要时创建一个新的连接。
+                    });
+                });
+ *
  */

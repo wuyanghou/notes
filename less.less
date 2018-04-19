@@ -1,0 +1,83 @@
+//less常见点记录
+
+//1，less结合calc
+     div{
+       width:clac(~"100%-30px");
+     }
+     div{
+       @width:30px;
+       width:calc(~"100%- @{width}")
+     }
+
+//2，导入
+     @import "index.less";
+     div{
+       color:red;
+     }
+
+//3，mixin
+     .one{
+       color:red;
+     }
+     .two{
+       font-size: 20px;
+     }
+     //如果不想显示.two 这一行css 可在后面加一个小括号,括号里面可以带参数，在调用时传入参数即可
+     // .two(@fontSize){
+     //   font-size: @fontSize;
+     // }
+     .mixindemo{
+       .one;
+       //.one(); //效果相同
+       .two;
+       //.two(20px)  //效果相同
+     }
+
+//4,传参demo
+      .demo(@variable) {
+        .color-@{variable} {
+          color: @variable;
+        }
+      }
+      .demo(blue);
+      .demo(yellow);
+      .demo(black);
+
+//5   extend
+      .one:extend(.two) {
+        font-size: 20px;
+      }
+      .two {
+        color: red;
+      }
+      //  编译结果
+      .one {
+        font-size: 20px;
+      }
+      .one, .two {
+        color: red;
+      }
+
+//6   父选择器
+      div{
+        color:red;
+        &:hover{
+          color:blue;
+        }
+      }
+
+// css小技能记录
+
+//1，去掉img下方的留白（常用几个即可）
+     //1，将img设置为块级对象
+     //2, 将img父盒子的font-size设置为0px
+     //3, 设置img对象的vertical-align属性为top，text-top，bottom，text-bottom
+//2，设置多行文字省略
+    div{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      //目前 -webkit 不能省，省略的话不出现效果
+      -webkit-line-clamp: 3;//在第三行出现省略号
+      -webkit-box-orient: vertical;
+    }
