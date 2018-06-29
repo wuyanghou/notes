@@ -2,11 +2,11 @@
 
 //1，less结合calc
      div{
-       width:clac(~"100%-30px");
+       width:calc(~"100% - 30px");
      }
      div{
        @width:30px;
-       width:calc(~"100%- @{width}")
+       width:calc(~"100% - @{width}")
      }
 
 //2，导入
@@ -81,3 +81,18 @@
       -webkit-line-clamp: 3;//在第三行出现省略号
       -webkit-box-orient: vertical;
     }
+
+
+    //less循环
+
+@widthMap:100 200 300 400;
+
+.loop(@list,@unit,@i:1) when (@i<=length(@list)){
+  @item:extract(@list,@i);
+  .width@{item}{
+    width:@item + @unit;
+  }
+  .loop(@list,@unit,@i+1);
+}
+
+.loop(@widthMap,0px);
