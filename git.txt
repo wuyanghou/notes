@@ -1,18 +1,168 @@
-﻿1，当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- test.js。
-2, 当你不但改乱了工作区某个文件的内容，还添加到了暂存区时(git add .)，想丢弃修改，git reset --hard 
+﻿    +  pwd (Print Working Directory) 查看当前目录
+    +  cd (Change Directory) 切换目录，如 cd /etc
+    +  ls (List) 查看当前目录下内容，如 ls -al,“.”(表示当前目录)和“..”(表示当前目录的父目录)。
+    +  mkdir (Make Directory) 创建目录，如 mkdir blog
+    +  touch 创建文件，如 touch index.html
+    +  echo >>追加文件 >重新添加一行
+    +  cat 查看文件全部内容，如 cat index.html
+    +  rm (remove) 删除文件，如 rm index.html、rm -rf  blog
+    +  rmdir (Remove Directory) 删除文件夹，只能删除空文件夹，不常用
+    +  mv (move) 移动文件或重命名，如 mv index.html ./demo/index.html
+    +  cp (copy) 复制文件，cp index.html ./demo/index.html
+    +  head 查看文件前几行，如 head -5 index.html
+    +  tail 查看文件后几行 –n –f，如 tail index.html、tail -5 index.html
+    +  history 查看操作历史
+    +  whoami 查看当前用户
 
-3，当你不但改乱了工作区某个文件的内容，还添加到了本地仓库时(git commit)，想丢弃修改，git reset --hard HEAD~1 
+git命令使用：
+    - git初次使用添加用户名和邮箱
+     + 配置用户名：` git config --global user.name "你的用户名" `
+     + 配置邮箱  ：` git config --global user.email "你的邮箱" `
+     + 删除错误配置  ：` git config --global --unset   "错误的key删除掉" `
+     + 查看配置  ：` git config --list `
+     + 去任何一家公司现完成上面的步骤
+   - 初始化一个空的仓储
+     + 初始化空仓储:` git init `
+     + 这个命令会在当前目录中新建一个隐藏的名为.git的文件夹,里面存储的是项目的各个版本。
+     + 千万不要更改.git目录里文件。
 
-4 当已经推送到远程仓库时，git revert HEAD  //撤销前一次
-						  git revert HEAD^ //撤销前前一次
-						  git revert commit-id //撤回指定
-						  
-						  
-						  
-5，切换远程分支         git checkout -b dev origin/dev
-   本地新建分支关联远程  git branch --set-upstream debug origin/debug
-   
-   
-6，git branch//本地分支
-	git branch -r //远程分支
-	git branch -a //全部分支
+
+   - 查看当前目录文件的状态
+     + 命令  : ` git status `
+	 - 查看当前工作目录的状态，是已经放到暂存区，还是提交到仓库了。
+     + 或命令: ` git status -s ` 查看简要的状态信息
+
+   - 将文件添加到暂存区
+       + 命令: ` git add ./file.txt`
+         - 将当前目录中的file.txt添加到暂存区
+       + 或者: ` git add .`
+         - 表示将当前目录所有文件都添加的暂存区.
+         - 这是批量添加.
+     + 可以对文件执行多次add命令，都会把最新的修改添加到暂存，但是，后页面执行add命令，会把前面执行add命令添加到暂存区的文件覆盖(相同的文件会覆盖)
+
+   - 将文件添加到仓储中
+      + 命令  : ` git commit -m "这次我添加了一个变量" `
+         - -m 表示需要指定一个字符串，表示本次提交的代码与上一次相比多了哪些功能，或者是做了哪些修改。
+         - 每次提交时都需要写上相应的字符串以做出说明
+      + 或命令: ` git commit -m  -c`
+         - -c 表示可以在提交时，不提供说明。
+         - 不推荐这么做，不利于后期代码维护
+         - 提交时只是提交暂存区的代码，没有添加到暂存区的代码不会提交
+
+   -  查看日志
+     + 命令:`git log`
+     + 或命令:`git log --oneline`
+     + 以图形化查看:`git log –graph`
+
+   - 忽略文件
+     + 不要省略/ 除非有必要
+     + 需要新建一个名为:  .gitignore 的文件
+     + 这个文件话.git同级目录.
+       - 该文件用来告诉我们的git哪些文件不要被添加一仓储中。
+       - 忽略某个目录:  /node_modules
+       - 忽略某个文件:  /css/my.css
+       - 忽略某一类文件:  /css/*.css
+       - 忽略目录下所有文件:  *.*
+       - 忽略所有名为node_modules的目录:  node_modules
+       - \#号表示注释
+
+   - 版本回退
+     + 命令:`git reset --hard Head`
+        - 回到最近一次提交的版本的文件状态
+        - git指向的是上一次提交
+        - 'git reset --hard Head^^ 表示回到最近往前第二次的提交'
+        - Head后面的^表示回退到第几次
+     + 命令: `git reset --hard Head~1`
+        - 表示回到最近一次提交的前一次提交.
+        - Head~2,回退到最近一次提交的前2次提交.
+     + 命令: `git reset --hard [版本号]`
+        - 示例: `git reset --hard 12dad211`
+        - 回退到某个具体的版本。
+        - 可以配合git reflog命令查看历史操作来进行回退
+     + 这里进行版本回退，并不会对文件进行真实的删除
+        - 通过` git reflog` 可以查看到每一次对版本的切换来提交。
+   + 恢复某个已修改的文件（撤销未提交的修改）
+      - `git checkout 文件名字或者.`
+
+
+   - 创建Git分支，并切换分支
+     + 查看有多少分支
+        - `git branch`
+     + 命令: ` git branch dev `
+        - 创建了一个名为dev的分支
+     + 命令:` git checkout dev`
+         - 切换到dev分支
+     + 创建并切换到指定分支
+       - `git checkout -b dev`
+   - 合并Git分支
+     + 命令: `git merge dev`
+        - 表示将当前分支与dev分支合并
+        - 在主分支下执行合并命令.
+     + 命令:`git branch -d dev`
+        - 表示删除dev分支,当合并分支后，如果不需要再使用dev分支，则可以直接删除。
+        - 不要在dev分支执行这个命令，在别的的分支执行.
+
+   - 对比
+	   + 命令:`git diff 分支1 分支2`
+	   + 或者`git difftool 分支1 分支2`
+   - 解决冲突
+     + 应该是如何合并冲突。
+     + 冲突是不可避免的。
+     + 当在新功能完成后合并前，修改并提交了主分支对应的文件，合并时两个分支中的文件有冲突。
+     + 手动修改文件，然后提交
+
+
+# Git网上操作
+   - gitHub、gitLab和国内的git网站
+     + gitHub大部分收费  [官网地址](https://github.com)
+     + gitLab大部分免费 [官网地址](https://gitlab.com)
+
+   - git clone
+     + 命令:'git clone [仓储地址]'
+     + 会把指定仓储的整个下载来
+     + 如果不需要下载整个仓储，只需要最新的一次提交,加上参数--depth
+
+   - push（推送）
+      + 命令：`git push [地址] master`
+      + 或命令：`git push origin master`
+
+   - pull（拉回)
+      + 命令：`git pull [地址] master`
+      + 或命令：`git pull origin master`
+
+   - remote命令使用
+      + git remote add “主机名称” “远程仓库地址”添加远程主机，即给远程主机起个别名，方便使用
+      + git remote rm“主机名称” 命令用于删除远程主机。
+      + git remote 可以查看已添加的远程主机
+      + git remote -v    查看远程主机信息
+      + git remote show “主机名称”可以查看远程主机的详细信息
+
+
+   - 当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- test.js。
+   - 当你不但改乱了工作区某个文件的内容，还添加到了暂存区时(git add .)，想丢弃修改，git reset --hard
+
+   - 当你不但改乱了工作区某个文件的内容，还添加到了本地仓库时(git commit)，想丢弃修改，git reset --hard HEAD~1
+
+   - 当已经推送到远程仓库时，git revert HEAD  //撤销前一次
+   						  git revert HEAD^ //撤销前前一次
+   						  git revert commit-id //撤回指定
+
+
+
+   - 切换远程分支         git checkout -b dev origin/dev
+   - 本地新建分支关联远程  git branch --set-upstream debug origin/debug
+
+
+   - git branch//本地分支
+   - git branch -r //远程分支
+   - git branch -a //全部分支
+
+   - tag  多人开发用branch 稳定版本用tag。发布一个版本前，通常要要给当前版本做个标记，以便回退到此版本
+      + 在需要打标签的分支上：`git tag v1.0`
+      + 查看所有标签 ：`git tag`
+      + 创建带有说明的标签，用-a指定标签名，-m指定说明文字： ：`git tag -a v0.1 -m "version 0.1 released"`
+      + 默认标签是打在最新提交的commit上的
+      + 删除标签：`git tag -d v1.0`//这样只删除了本地的标签
+      + 推送标签到远程：`git push origin v1.0`
+      + 一次性推送全部尚未推送到远程的本地标签：：`git push origin --tags`
+      + 删除远程标签：：`git tag -d v1.0`    git push origin :refs/tags/v1.0
