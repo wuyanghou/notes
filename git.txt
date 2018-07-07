@@ -1,4 +1,4 @@
-﻿    +  pwd (Print Working Directory) 查看当前目录
+    +  pwd (Print Working Directory) 查看当前目录
     +  cd (Change Directory) 切换目录，如 cd /etc
     +  ls (List) 查看当前目录下内容，如 ls -al,“.”(表示当前目录)和“..”(表示当前目录的父目录)。
     +  mkdir (Make Directory) 创建目录，如 mkdir blog
