@@ -1,0 +1,6 @@
+options请求：试探性请求，对可能服务器数据产生副作用的请求，浏览器会事先发送options请求，得到服务器的许可后才会发出真正的请求。
+            1，使用以下http方法:put，delete，patch，connect
+            2, 认为设置一些headers字段
+            3，数据类型为application/x-www-form-urlencoded
+                         multipart/form-data
+                         text/plain之外的
