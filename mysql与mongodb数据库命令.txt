@@ -1,0 +1,344 @@
+### 数据库入门
+---
+#### 为什么有数据库
+* 对比内存存储
+    - 好处,速度快,安全
+    - 弊端:服务器一重启就没了
+* 对比文件存储
+    - 数据是一直存在的
+    - 文件谁都可以打开,不安全
+    - 没有数据规则约定,查找的时候效率低
+* 数据库来存储数据
+    - 安全,通过文件来存储,但是该数据只能数据库客户端打开
+    - 可以保持数据持久化
+    - 查询速度会比较快,数据库数据文件会按照特定的算法来做记录,有了规则
+
+#### 数据库也是软件
+* 负责存储数据的服务器
+* 负责操作数据的客户端
+* mysql的安装会包含服务器客户端一起安装
+
+#### 数据库存储结构
+* 一个数据库软件 -- > (DB:database)多个文件夹 --> 多个表(excel)--> 多条记录(一个学生)--> 每一条记录可能有多个列
+    - 一个数据库对应多个DB,一个DB对应多张表,一张表对应多条数据
+    - 每一条数据可能有多个列
+
+#### SQL(Structure Query Language) 结构查询语言
+* SQL是一个查询数据库操作的定义(规范)
+* 数据定义语言（Data Definition Language）简称DDL
+    - 定义一个数据库、表、列(字段)
+    - 修改数据库、表、字段
+    - 删除库、表、字段
+* 数据操作语言（Data Manipulation Language）简称DML
+    - 增删改查(CRUD)C(create):增,D(delete):删,R(retrieve):查,U(update):改
+    - 增删改(CUD)
+* 数据查询语言（Data Query Language）简称DQL
+    - 查询语句(R) 
+
+#### 常见数据库
+
+* Orcale数据库
+
+```
+Orcale数据库管理系统由甲骨文公司开发，在数据库领域一直处于领先地位。
+大型的商业型数据库，目前国内一些大公司在用，国企
+淘宝、京东等都有使用，一个很老牌的数据库，稳定
+```
+* DBA: database administrator
+* SAP: 流水线生产管理的系统(上市所的财务报表，通过sap出具比较具备权威)
+
+* SqlServer数据库
+```
+由微软公司开发，只能在Windows上运行。.net程序员。
+但是，微软现在已经把SqlServer移植到了别的平台
+```
+
+* DB2数据库
+
+```
+由IBM公司开发，在金融行业中使用的比较多。IBM的服务器，买服务器送数据库。
+IBM靠硬件发家的，小型机。小型服务器, 
+```
+
+* MySQL数据库
+
+```
+MySQL数据管理系统由瑞典的MySQLDB公司开发，但是几经辗转，现在已经是Oracle的产品了。
+开源、免费、轻量
+MySQL具有跨平台的特性，不仅可以在Windows平台上使用，还可以在Unix、Linux和Mac OSX平台上使用。
+相对其它数据库而言，MySQL的使用也更加方便、快捷而且MySQL免费所以运营成本低，因此很多公司都在用MySQL。
+Oracle收购过来之后，发行了两个版本：
+    一个是企业版，公司买了之后，Oracle公司可以提供一些服务，例如数据恢复，或者说存储数据出现了问题
+    一个社区版，也就是免费开源版
+```
+* MongoDB数据库
+
+```
+mongodb是一种非关系型数据库，简称NoSQL,not only sql
+存储方式，不是数据库-DB-表-记录
+mongod的存储方式是：数据库-DB-集合-（实体）文档（随便存储，就像json对象一样）
+MongoDB是由10gen公司开发的一个介于关系型数据库和非关系型数据库之间的产品，是非关系型数据库中功能最丰富，最像关系型数据库的。他支持的数据结构非常松散，是类似json的格式，所以可以存储比较复杂的数据结构类型。
+MongoDB数据库管理系统最大的特点就是它支持的查询语言非常强大，语法类似于面向对象的查询语言。它还是一个开源的数据库，对于大数据量、高并发的互联网应用，支持非常不错。
+操作非关系型数据库不需要使用SQL语言
+
+```
+
+## MYSQL
+---
+### 数据库安装
+
+#### 安装注意事项
+* **以管理员身份运行安装包**
+* 第一步选择第二个，自定义安装
+* 新手建议使用默认路径(老师好调试)
+* 严格模式
+* 语言选择日本语
+* 控制台添加环境变量(include bin directory in window path)
+* 设置密码root
+* 安装成功![](../1-教学资料/mysql安装成功.png)
+
+
+#### MySQL服务
+* services.msc 查看服务
+    - 开启或者关闭
+* 方式2：命令行，以管理员身份打开
+    - `net stop mysql`
+    - `net start mysql`
+
+#### MySQL目录结构
+* bin：可执行文件所在目录
+* data：数据文件所在目录
+* Docs：文档目录
+* share：存放字符集等信息
+* my.ini：MySQL数据库使用的配置文件，在启动的时候就回去读取该文件
+
+#### 登录相关命令
+* 登录 `mysql -uroot -p` 接着输入密码
+* 查看数据库 ` show databases;`
+* 切换数据库  `use itcast;`
+* 查看表 `show tables;` //可以看到当前在哪个DB下，Tables_in_itcast 
+
+
+退出：exit;
+      quit;
+      \q;		
+
+#### 解决中文乱码问题
+* 1: 登录后输入 set character_set_client = gbk;
+* 2: 在mysql根目录my.ini 里面配置default-character-set=gbk
+    - 默认安装目录`C:/program file/mysql/my.ini`
+* 3: 重启服务
+
+#### 导入数据
+* 教学资料中存放的是老师系统中itcast库的数据库表及数据
+* 1:创建一个数据库 `create database itcast`
+* 2:切换数据库  `use itcast;`
+* 3:将1-教学资料中的mysql_itcast.sql内部的数据直接粘贴到命令行中
+
+#### 数据类型
+* 整数类型int   
+* 浮点类型double
+* 日期类型timestamp
+    - 以字符串的形式,日期的格式输入
+* 字符串类型
+    - 定长字符串 char(4)
+        + 只要不超过4个字符串,中文或者英文,占据的空间都是4个字节
+    - 变长字符串 varchar(4)
+        + 只要不超过4个字符串,中文或者英文,会根据实际插入的数据大小来缩小,比如：'abc' 实际占据空间是3
+* 如果已知长度固定,性别列字段,使用char
+* 如果不定长度，首先前确认可以存在的最大长度来作为声明varchar(5000),如果此时给3个字，就只占3个
+* 首先足够用,其次尽量小
+
+### CRUD(增删改查)
+---
+#### 添加数据
+* `INSERT INTO table_name VALUES(value1,value2,value3...)`
+* 练习: 
+    - 使用INSERT语句向students表中插入两个员工信息
+    - 向全表字段插入`insert into students values (9,'坤哥',99.9,88.8,77.7,1);`
+    - 建议使用按字段来插入数据,预防如果中途有人添加或者删除了字段，那么此时上面的语句是对全表字段插入,字段与值的数量就不匹配，就会报错
+    - 建议插入的语句 `insert into students (id,name,chinese,math,english,sex) values (11,'东哥',88.88,77.77,99.99,1);`
+
+#### 更新数据
+* `UPDATE table_name SET col_name1=expr1 [, col_name2=expr2 ...][WHERE where_definition]`
+* 练习：
+    1.  将所有员工语文成绩改为10 `update students set chinese = 10 where 1=1; `
+    2.  将姓名为'小乔'的员工语文成绩 80 `update students set chinese = 80 where name = '小乔';`
+    3.  将姓名为'小乔'的员工语文40，数学80 `update students set chinese = 40,math = 80 where name = '小乔';`
+    4.  将'小乔'的语文在原有基础上增加10分`update students set chinese = chinese + 10 where name = '小乔';`
+
+#### 删除数据
+* `DELETE from table_name [WHERE where_definition]`
+* 练习:
+    1.  删除students表中名称叫'张飞'的记录`delete from students where name = '张飞'`
+    2.  删除表中所有记录`delete from students where 1=1`
+    3.  使用truncate删除表中记录`truncate table students`
+* truncate是清空一整张表，然后再创建一个一样的新表
+* delete是逐条删除该表的每一条记录,效率低于truncate
+* delete删除不会删除原来表所存在的一些信息,1..2..3 自增ID是不会清除的
+* truncate 会重新创建变，因此自增ID也恢复了初始化的阶段
+
+#### 查询数据
+* `SELECT [DISTINCT] *|{colum1, colum2, colum3...} FROM table_name;`
+* 开发的时候可能并不需要获取全表的数据,开发阶段的sql应该是按字段来查询
+* 测试阶段可以select * 查询出全表数据
+* 练习:
+    1. 在所有学生分数上加10分特长分显示`select name '名字',chinese+10 as '语文',math+10 '数学',10+english '英语' from students;`
+    2. 统计每个学生加上别名的总分`select name,(english+chinese+math) as '总分' from students;`
+   
+
+#### 条件查询
+* `SELECT * FROM table_name WHERE expr;`
+   select * from students where math <>80;
+* 练习:
+    1. 查询英语成绩分数在 70-100之间的同学`select * from students where english >= 70 and english <= 100`
+        - `select * from students where english between 70 and 100 ;`
+    2. 查询数学分数为75,76，77的同学 `select * from students where math = 60 or math = 88.8 or math = 77.77;`
+        - `select * from students where math in (60,88.8,77.77);`  
+    3. 查询所有姓张的学生成绩 `select * from students where name like '张%'`
+    4. 查询数学分大于70，语文分数大于80的同学 `select * from students where math > 70 and chinese > 80` 
+
+#### 聚合函数
+* COUNT(列名或*)   返回某行的总数
+    - 练习：
+         1. 统计一个班级共有多少学生`select count(*) from students;`
+         2. 统计数学成绩大于70分的学生有多少个`select count(math||*) from students where math > 70`
+         3. 统计总分大于200的人数有多少`select count(*) from students where (math+english+chinese) > 200; `
+* SUM(列名) 返回某列值的和
+    - 练习：
+         1. 统计一个班级数学总成绩`select sum(math) from students;`
+         2. 统计一个班级语文、英语、数学各科的总成绩`select sum(math),sum(english),sum(chinese) from students;`
+         3. 统计一个班级语文、英语、数学的成绩总和`select sum(math+english+chinese) from students;`
+    - 注意：SUM仅对数值起作用，否则报错
+* AVG(列名) 返回某列的平均值
+    - 练习：
+         1. 求所有学生的数学平均分`select avg(math) from students;`
+         2. 求所有学生的总分平均分`select avg(math+english+chinese) from students;`
+         3. 统计一个班级语文成绩平均分`select avg(chinese) from students;`
+* MAX(列名) 返回某列值的最大值
+    - 练习:
+         1. 求所有学生成绩中英语的最高分`select max(english) from students;`
+         2. 求所有学生成绩中总分最高分 `select max(english+chinese+math) from students;`
+         3. 求所有学生成绩中语文最低分`select min(chinese) from students;`
+* MIN(列名) 返回某列的最小值
+
+#### 排序
+* `SELECT colum1, colum2, colum3..|| * FROM table_name ORDER BY colum ASC|DESC;`
+* 默认是ASC升序,desc降序
+* 练习：
+    1. 对数学成绩排序后输出`select * from students order by math;`
+    2. 对总分排序按从高到低的顺序输出`select * from students order by (math+english+chinese) desc;`
+    3. 对姓小的学生成绩排序降序输出`select * from students where name like '小%' order by chinese desc;`
+
+#### 分组
+* `SELECT colum1, colum2, colum3..FROM table_name GROUP BY colum ;` 
+* 练习:
+    - 按性别统计总分`select sum(english+chinese+math) from students group by sex;`
+* 分组通常结合聚合函数使用，由于没有分组，默认聚合函数只有一个结果,经过分组以后，group by 后面的字段名会和相同的值的数据划分为一组，聚合函数会为多组做聚合运算
+
+#### 分页
+* `SELECT colum1, colum2, ... FROM 表名 LIMIT [OFFSET],记录数`
+* 练习
+    - 查询第5-10条数据`select * from students limit 4,6`
+
+## MONGODB
+---
+#### mongo服务器
+* 使用命令之前确保文件夹存在
+* mongod --dbpath "D:\mongodb\db" --logpath "D:\mongodb\log\mongo.log" 
+* 解决32位异常 mongod --dbpath="路径" --journal --storageEngine=mmapv1  
+
+### 安装服务 
+* 以管理员的方式运行控制台,进入到bin目录下`mongod --dbpath "D:\mongodb\db" --logpath "D:\mongodb\log\mongo.log" --journal --storageEngine=mmapv1  --install --serviceName "MongoDB"` 
+* 以管理员的方式运行控制台,`sc delete MongoDB`
+
+#### 配置全局使用mongo
+* 环境变量MONGO，作为mongo的bin目录，加入到path中
+
+#### 登录相关命令
+* 在mongo中所有的bd和collection不用创建，你就当他是存在，直接使用
+* 当你保存进数据以后，对应的collection就会被创建了
+* 客户端连接服务器**另开一个命令行**
+    - `mongo` 默认连接的是test数据库
+* 查询有哪些数据库  
+    - 查询数据库：`show dbs;`
+    - 切换数据库: `use 数据库名;`
+* 查询当前db下有哪些集合
+    - `show collections;`
+
+ 
+#### 导入数据
+* 导出 mongoexport /d "itcast" /o "D:/aaa/aaa.json" /c "users"
+    - /d db名称 /o 输出文件 /c 集合名称
+* 导入 mongoimport /d itcast /c users /file "D:/aaa.json"
+ 
+
+#### 总体思想
+* 关系是数据库对应多个DB
+    - 一个DB对应多个集合
+    - 集合对应多个文档对象
+    - 在mongo中不论是db还是集合，你都无需去创建他,直接使用
+    
+### CRUD(增删改查)
+---
+
+* 查询数据：
+    - `db.集合名.find();`  //查询出来的是文档对象 document
+    - `db.users.find();`
+* 添加数据:
+    - `db.集合名.save(对象)` //mongo默认会给我们加入_id作为该文档对象的唯一标识
+    - `db.users.save({contry:'中国',name:'小明',score:77});`
+* 删除数据:
+    - `db.集合名.remove(条件对象);`//条件匹配就会被删除
+    - `db.users.remove({name:'小明'});`
+    - 如果给定一个空对像，会匹配全部
+* 更新数据:
+    - `db.集合名.update({匹配条件对象},{$set:{修改后的对象}});`
+    - `db.users.update({name:'小明'},{$set:{contry:'印度'}});;`
+
+#### 条件查询
+```javascript
+(>) 大于 - $gt (greater then)
+(<) 小于 - $lt (less then)
+(>=) 大于等于 - $gte (greater then or equal)
+(<= ) 小于等于 - $lte (less then or equal)
+(!=) 不等于 - $ne (not equal)
+```
+* 练习：
+?   1.查询姓名为小明的学生``
+?   2.查询成绩大于90分的同学``
+?   3.查询成绩不等于88的同学``
+?   4.查询总分77分的所有同学``
+?   5.查询总分小于77分的所有同学``
+
+
+#### 分页
+* `db.users.find().skip(3).limit(3);`
+* db.集合名称.find().跳到3.显示3条
+* 练习:
+        1.查询学生集合第3到6条   
+
+#### 排序
+* `db.users.find().sort({key:排序方式});`
+* 1代表升序，-1代表降序
+* 练习:
+    - 按成绩降序显示users集合
+
+#### 模糊匹配
+* `db.users.find({name:正则});`
+* 例如:`db.users.find({name:/regex/});`
+* 练习：
+    - 查询姓名包含小的文档
+    - 查询名称以小开头
+    - 查询以ck结尾的
+    
+#### 聚合函数
+
+* 需要求当前集合的记录数：
+* `db.users.find().count();`
+* 求最大值
+    -求整个集合的总成绩
+        + db.集合名.聚合({ 组的划分规则{_id:'1',显示内容:{$sum:'$score'}} })
+    - 求所有人的平均分
+    - 求按国家分组，求所有国家的总分
+
