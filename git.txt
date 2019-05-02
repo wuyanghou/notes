@@ -170,3 +170,13 @@ git命令使用：
 
 
     --amend
+
+    git checkout feature
+    git merge master
+
+
+    git checkout feature
+    git rebase master
+
+
+    不要在公共分支上使用 rebase
